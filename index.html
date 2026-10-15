@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>USMAN AI - Ultimate Creative & Deep Intelligence</title>
+
+  <meta name="theme-color" content="#2563eb">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <style>
+    :root {
+      --bg-body: #f8fafc;
+      --panel-bg: #ffffff;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-ui: #e2e8f0;
+      --chat-bot: #f1f5f9;
+      --chat-user: #2563eb;
+      --pill-bg: #eff6ff;
+      --pill-hover: #dbeafe;
+      --code-block: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-dark);
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* 1. Login screen (scrollable on short screens) */
+    #auth-screen {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-y: auto;
+      z-index: 999;
+      padding: 20px 16px;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      padding: 26px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      text-align: center;
+      margin: auto;
+    }
+
+    .auth-card h2 {
+      font-size: 22px;
+      color: var(--primary);
+      margin-bottom: 6px;
+      font-weight: 800;
+    }
+
+    .auth-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .auth-field {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-ui);
+      border-radius: 8px;
+      font-size: 16px; /* prevents iOS auto-zoom on focus */
+      outline: none;
+      background: #f8fafc;
+    }
+
+    .auth-field:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    .auth-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .auth-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* 2. Main container */
+    #app-container {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      background: var(--panel-bg);
+      max-width: 1400px;
+      position: relative;
+    }
+
+    #sidebar {
+      width: 320px;
+      background: #f8fafc;
+      border-left: 1px solid var(--border-ui);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 14px;
+      transition: transform 0.3s ease;
+      z-index: 100;
+    }
+
+    .user-profile-badge {
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-ui);
+    }
+
+    .user-profile-badge h4 {
+      font-size: 14px;
+      color: var(--primary);
+    }
+
+    .user-profile-badge p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .sidebar-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #freq-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .freq-item {
+      background: white;
+      border: 1px solid var(--border-ui);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: all 0.2s;
+    }
+
+    .freq-item:hover {
+      background: #eff6ff;
+      border-color: var(--primary);
+    }
+
+    #main-chat {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      background: white;
+    }
+
+    header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-ui);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .u-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #1e3a8a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+      box-shadow: 0 2px 5px rgba(37,99,235,0.25);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .head-icon-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .head-icon-btn:hover {
+      background: #f1f5f9;
+      color: var(--text-dark);
+    }
+
+    #quick-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border-ui);
+      background: #fafafa;
+      scrollbar-width: none;
+    }
+    #quick-pills::-webkit-scrollbar { display: none; }
+
+    .pill {
+      background: var(--pill-bg);
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      white-space: nowrap;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .pill:hover { background: var(--pill-hover); }
+
+    #chat-stream {
+      flex: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .bot {
+      background: var(--chat-bot);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+      border: 1px solid var(--border-ui);
+    }
+
+    .user {
+      background: var(--chat-user);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .msg pre {
+      background: var(--code-block);
+      color: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 13px;
+      margin: 8px 0;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .msg code {
+      background: rgba(0,0,0,0.06);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .bot-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      font-size: 11px;
+      white-space: normal;
+    }
+
+    .bot-action-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .bot-action-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .bot-action-btn:hover {
+      color: var(--primary);
+    }
+
+    .stats-label {
+      color: #94a3b8;
+      font-size: 10px;
+    }
+
+    .gen-img-container {
+      position: relative;
+      margin-top: 8px;
+      white-space: normal;
+    }
+
+    .gen-img {
+      width: 100%;
+      max-width: 550px;
+      min-height: 120px;
+      border-radius: 10px;
+      display: block;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      background: #e2e8f0;
+    }
+
+    .img-download-btn {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 12px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .typing-loader {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+    }
+    .typing-loader span {
+      width: 6px;
+      height: 6px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .typing-loader span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-loader span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    footer {
+      padding: 10px 14px;
+      padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid var(--border-ui);
+      background: white;
+    }
+
+    .input-bar {
+      display: flex;
+      align-items: center;
+      background: var(--bg-body);
+      border: 1px solid var(--border-ui);
+      border-radius: 24px;
+      padding: 4px 8px;
+      gap: 6px;
+    }
+
+    .input-bar:focus-within {
+      border-color: var(--primary);
+    }
+
+    .tool-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    #chat-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 16px; /* prevents iOS auto-zoom on focus */
+      padding: 4px;
+    }
+
+    .send-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .creator-line {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        transform: translateX(100%);
+        box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+      }
+      #sidebar.open {
+        transform: translateX(0);
+      }
+      .msg {
+        max-width: 88%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Login screen -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <h2>USMAN AI</h2>
+      <p>شروع کرنے کے لیے اپنی تفصیلات درج کریں</p>
+      <input type="text" id="user-name" class="auth-field" placeholder="پورا نام..." maxlength="60">
+      <input type="email" id="user-email" class="auth-field" placeholder="ای میل ایڈریس..." maxlength="100">
+      <input type="number" id="user-age" class="auth-field" placeholder="عمر (سال)..." min="1" max="120" inputmode="numeric">
+      <select id="user-gender" class="auth-field">
+        <option value="مرد">مرد (Male)</option>
+        <option value="عورت">عورت (Female)</option>
+        <option value="دیگر">دیگر</option>
+      </select>
+      <select id="user-role" class="auth-field">
+        <option value="طالب علم">طالب علم (Student)</option>
+        <option value="استاد / انسٹرکٹر">استاد (Teacher / Instructor)</option>
+        <option value="ڈاکٹر / طبی ماہر">طبی شعبہ / ڈاکٹر (Medical / Health)</option>
+        <option value="کاروباری شخص">کاروبار / تاجر (Business)</option>
+        <option value="گھریلو منتظم">گھریلو فرد / ہوم میکر (Homemaker)</option>
+        <option value="عام شہری">دیگر / عام صارف (General)</option>
+      </select>
+      <button class="auth-btn" onclick="saveLogin()">لاگ ان کریں اور شروع کریں</button>
+    </div>
+  </div>
+
+  <div id="app-container">
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:bold; font-size:14px;">پروفائل ڈیش بورڈ</span>
+        <button class="head-icon-btn" onclick="toggleSidebar()">✕</button>
+      </div>
+
+      <div class="user-profile-badge">
+        <h4 id="disp-user-name">صارف: معزز مہمان</h4>
+        <p id="disp-user-meta">عمر: -- | شعبہ: --</p>
+      </div>
+
+      <div class="sidebar-section-title">
+        <span>اکثر پوچھے گئے سوالات</span>
+      </div>
+      <ul id="freq-list"></ul>
+
+      <button class="auth-field" style="margin-top:auto;" onclick="exportChat()">چیٹ محفوظ کریں (Download Chat)</button>
+      <button class="auth-field" onclick="clearHistory()">چیٹ صاف کریں (Clear Chat)</button>
+      <button class="auth-field" style="background:#fee2e2; color:#b91c1c; border-color:#fca5a5;" onclick="logout()">لاگ آؤٹ</button>
+    </div>
+
+    <!-- Chat area -->
+    <div id="main-chat">
+      <header>
+        <div class="brand-group">
+          <div class="u-badge">U</div>
+          <div>
+            <h3 style="font-size:16px;">USMAN AI</h3>
+            <p style="font-size:11px; color:var(--text-muted);">پروڈکشن لیول گرافکس و الٹیمیٹ انٹیلیجنس</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="head-icon-btn" title="چیٹ ڈاون لوڈ کریں" onclick="exportChat()">💾</button>
+          <button class="head-icon-btn" title="مینو" onclick="toggleSidebar()">☰</button>
+        </div>
+      </header>
+
+      <!-- Quick prompt pills -->
+      <div id="quick-pills">
+        <span class="pill" onclick="sendCustomVisual('لوگو: غنی پرفیومز کے لیے لگژری اور منیمالسٹ گولڈن ویکٹر لوگو')">✨ لگژری برانڈ لوگو</span>
+        <span class="pill" onclick="sendCustomVisual('یوٹیوب تھمب نیل: AI ٹیکنالوجی کے مستقبل پر ہائی کلک ایبل تھمب نیل')">🎥 یوٹیوب تھمب نیل</span>
+        <span class="pill" onclick="sendCustomVisual('پروڈکٹ فوٹوگرافی: سنگ مرمر پر رکھا ہوا رائل عود پرفیوم، اسٹوڈیو لائٹنگ')">💎 پروڈکٹ فوٹو شوٹ</span>
+        <span class="pill" onclick="sendQuickPrompt('فوٹوسنتھیسز کو زیرو سے ایڈوانس تک ایک اسکول طالب علم کے لیے آسان مثالوں سے سمجھائیں')">🌱 فوٹوسنتھیسز (تدریسی)</span>
+        <span class="pill" onclick="sendQuickPrompt('فری گرافک ڈیزائننگ اور ویڈیو ایڈیٹنگ کے لیے 5 جدید ترین ویب سائٹس بتائیں')">🛠️ ڈیزائننگ ٹولز</span>
+      </div>
+
+      <div id="chat-stream"></div>
+
+      <footer>
+        <div class="input-bar">
+          <button class="tool-btn" title="پروڈکشن گرافکس / تصویر بنائیں" onclick="askImage()">🖼️</button>
+          <button class="tool-btn" title="آواز سے بولیں" onclick="startVoice()">🎙️</button>
+          <input type="text" id="chat-input" maxlength="1000" enterkeyhint="send" autocomplete="off"
+                 placeholder="سوال پوچھیں، لوگو/تھمب نیل بنوائیں، یا گہری تحقیق لیں..." onkeydown="handleEnter(event)">
+          <button class="send-btn" id="send-btn" onclick="sendQuery()">➤</button>
+        </div>
+        <div class="creator-line">The App was created by Usman</div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    /* ---------- Constants & helpers ---------- */
+    const MAX_LEN = 1000;            // keeps the GET URL a safe length
+    const MAX_HISTORY = 100;
+    const MAX_TRACKED_QUERIES = 50;
+    const REQUEST_TIMEOUT_MS = 45000;
+
+    const esc = s => String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    const safeGet = (k, d) => {
+      try {
+        const v = JSON.parse(localStorage.getItem(k));
+        return v === null || v === undefined ? d : v;
+      } catch (e) { return d; }
+    };
+    const safeSet = (k, v) => {
+      try { localStorage.setItem(k, JSON.stringify(v)); return true; }
+      catch (e) { return false; }
+    };
+    const safeRemove = k => { try { localStorage.removeItem(k); } catch (e) {} };
+
+    /* ---------- State (validated on load) ---------- */
+    let currentUser = safeGet('usman_ai_user', null);
+    if (!currentUser || typeof currentUser !== 'object' || !currentUser.name ||
+        !Number.isFinite(Number(currentUser.age))) {
+      currentUser = null;
+    } else {
+      currentUser.age = Number(currentUser.age);
+    }
+
+    let queryTracker = safeGet('usman_ai_queries', {});
+    if (!queryTracker || typeof queryTracker !== 'object' || Array.isArray(queryTracker)) queryTracker = {};
+
+    let chatHistory = safeGet('usman_ai_chat_history', []);
+    if (!Array.isArray(chatHistory)) chatHistory = [];
+    chatHistory = chatHistory.filter(i =>
+      i && (i.role === 'user' || i.role === 'bot') && typeof i.content === 'string');
+
+    let lastQuery = '';
+    let busy = false;
+    let recognizing = false;
+
+    const chatStream = document.getElementById('chat-stream');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const sidebar = document.getElementById('sidebar');
+
+    /* ---------- Boot ---------- */
+    function boot() {
+      if (!currentUser) {
+        document.getElementById('auth-screen').style.display = 'flex';
+      } else {
+        document.getElementById('auth-screen').style.display = 'none';
+        initApp();
+      }
+      // Keep the latest message visible when the on-screen keyboard opens
+      chatInput.addEventListener('focus', () => {
+        setTimeout(() => { chatStream.scrollTop = chatStream.scrollHeight; }, 300);
+      });
+    }
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('open');
+    }
+
+    function saveLogin() {
+      const name = document.getElementById('user-name').value.trim();
+      const email = document.getElementById('user-email').value.trim();
+      const age = parseInt(document.getElementById('user-age').value.trim(), 10);
+      const gender = document.getElementById('user-gender').value;
+      const role = document.getElementById('user-role').value;
+
+      if (!name || !email || !email.includes('@') || isNaN(age) || age < 1 || age > 120) {
+        alert("براہ کرم تمام معلومات درست طریقے سے درج کریں!");
+        return;
+      }
+
+      currentUser = { name, email, age, gender, role };
+      safeSet('usman_ai_user', currentUser);
+      document.getElementById('auth-screen').style.display = 'none';
+      initApp();
+    }
+
+    function logout() {
+      safeRemove('usman_ai_user');
+      safeRemove('usman_ai_chat_history');
+      safeRemove('usman_ai_queries');
+      location.reload();
+    }
+
+    function clearHistory() {
+      if (confirm("کیا آپ واقعی پرانی چیٹ ختم کرنا چاہتے ہیں؟")) {
+        chatHistory = [];
+        safeRemove('usman_ai_chat_history');
+        chatStream.innerHTML = '';
+        initWelcome();
+      }
+    }
+
+    function exportChat() {
+      if (chatHistory.length === 0) {
+        alert("ڈاؤن لوڈ کے لیے کوئی گفتگو موجود نہیں ہے۔");
+        return;
+      }
+      try {
+        let content = "=== USMAN AI Conversation Log ===\nCreated by Usman\n\n";
+        chatHistory.forEach(item => {
+          const who = item.role === 'user' ? (currentUser ? currentUser.name : 'User') : 'USMAN AI';
+          const text = item.isHtml ? item.content.replace(/<[^>]*>/g, '') : item.content;
+          content += `[${who}]:\n${text}\n\n`;
+        });
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `USMAN_AI_Chat_${Date.now()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch (e) {
+        alert("چیٹ محفوظ نہیں ہو سکی۔");
+      }
+    }
+
+    function initApp() {
+      document.getElementById('disp-user-name').innerText = `صارف: ${currentUser.name}`;
+      document.getElementById('disp-user-meta').innerText = `عمر: ${currentUser.age} سال | ${currentUser.role}`;
+      renderFrequentQueries();
+
+      if (chatHistory.length === 0) {
+        initWelcome();
+      } else {
+        renderChatHistory();
+      }
+    }
+
+    function initWelcome() {
+      // ** ** markers are converted to <strong> AFTER escaping, so names can't inject HTML
+      const n = currentUser.name;
+      let welcomeTone = "";
+      if (currentUser.age <= 12) {
+        welcomeTone = `پیارے دوست **${n}**! میں آپ کا دوست **USMAN AI** ہوں۔ مجھ سے جو چاہیں پوچھیں، کہانیاں سنیں، سائنس کی باتیں سیکھیں یا خوبصورت تصویریں بنوائیں۔ میں ہر چیز آسان بنا کر سکھاؤں گا!`;
+      } else if (currentUser.age >= 50) {
+        welcomeTone = `محترم **${n}** صاحب، السلام علیکم! میں **USMAN AI** ہوں، جسے عثمان نے ایک سنجیدہ، باوقار اور سچ پر مبنی رفیق کے طور پر ترتیب دیا ہے۔ آپ جس موضوع پر بھی تفکر، تحقیق یا مشورہ چاہیں گے، میں پوری دیانت داری سے حاضر ہوں۔`;
+      } else {
+        welcomeTone = `خوش آمدید **${n}** صاحب!\n\nمیں **USMAN AI** ہوں—ایک مکمل خود مختار تعلیمی، گرافکس اور گہری فکری انٹیلیجنس۔\n\n• پروڈکشن لیول لوگوز، یوٹیوب تھمب نیلز اور پروڈکٹ شوٹس۔\n• کسی بھی موضوع کو زیرو سے ایڈوانس تک سکھانے کا فہم۔\n• اگر آپ صرف خلاصہ مانگیں گے تو خلاصہ دوں گا، کی پوائنٹس مانگیں گے تو صرف کی پوائنٹس دوں گا۔\n• خوشامد کے بجائے حقائق پر مبنی رہنمائی۔\n\nفرمائیے، آج کس موضوع پر کام کرنا ہے؟`;
+      }
+      pushMsg('bot', welcomeTone, false, false);
+    }
+
+    function renderChatHistory() {
+      chatStream.innerHTML = '';
+      chatHistory.forEach(item => {
+        pushMsg(item.role, item.content, !!item.isHtml, false, item.q || '');
+      });
+    }
+
+    function renderFrequentQueries() {
+      const freqList = document.getElementById('freq-list');
+      freqList.innerHTML = '';
+      const sortedQueries = Object.keys(queryTracker)
+        .sort((a, b) => queryTracker[b] - queryTracker[a])
+        .slice(0, 6);
+
+      if (sortedQueries.length === 0) {
+        freqList.innerHTML = '<li style="font-size:11px; color:#94a3b8; padding:8px;">ابھی کوئی سوال ریکارڈ نہیں ہوا۔</li>';
+        return;
+      }
+
+      sortedQueries.forEach(q => {
+        const li = document.createElement('li');
+        li.className = 'freq-item';
+        li.innerText = q; // innerText: safe, no HTML parsing
+        li.onclick = () => {
+          if (window.innerWidth <= 768) sidebar.classList.remove('open');
+          sendQuery(q);
+        };
+        freqList.appendChild(li);
+      });
+    }
+
+    function trackQuery(val) {
+      queryTracker[val] = (queryTracker[val] || 0) + 1;
+      const keys = Object.keys(queryTracker);
+      if (keys.length > MAX_TRACKED_QUERIES) {
+        keys.sort((a, b) => queryTracker[b] - queryTracker[a])
+            .slice(MAX_TRACKED_QUERIES)
+            .forEach(k => delete queryTracker[k]);
+      }
+      safeSet('usman_ai_queries', queryTracker);
+      renderFrequentQueries();
+    }
+
+    function sendQuickPrompt(txt) {
+      sendQuery(txt);
+    }
+
+    // Visual pills always go through the image engine
+    function sendCustomVisual(promptText) {
+      sendQuery('تصویر: ' + promptText);
+    }
+
+    /* ---------- Rendering ---------- */
+    // Escape first, then apply a tiny markdown subset. Never feed raw text to innerHTML.
+    function formatMarkdown(rawText) {
+      return esc(rawText)
+        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    }
+
+    async function copyText(t) {
+      try {
+        await navigator.clipboard.writeText(t);
+        return true;
+      } catch (e) { /* fall through to legacy path */ }
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = t;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        ta.remove();
+        return ok;
+      } catch (e) { return false; }
+    }
+
+    function attachActions(el, retryQuery) {
+      // Capture the text BEFORE the action row is added, so the copy/speak/word-count are clean
+      const plainText = el.textContent.trim();
+
+      const actionRow = document.createElement('div');
+      actionRow.className = 'bot-actions';
+
+      const group = document.createElement('div');
+      group.className = 'bot-action-group';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'bot-action-btn';
+      copyBtn.innerHTML = '📋 کاپی';
+      copyBtn.onclick = async () => {
+        const ok = await copyText(plainText);
+        copyBtn.innerHTML = ok ? '✅ ہو گیا' : '⚠️ ناکام';
+        setTimeout(() => { copyBtn.innerHTML = '📋 کاپی'; }, 2000);
+      };
+
+      const speakBtn = document.createElement('button');
+      speakBtn.className = 'bot-action-btn';
+      speakBtn.innerHTML = '🔊 سنیں';
+      speakBtn.onclick = () => speakText(plainText);
+
+      const retryBtn = document.createElement('button');
+      retryBtn.className = 'bot-action-btn';
+      retryBtn.innerHTML = '🔄 دوبارہ';
+      retryBtn.onclick = () => {
+        const q = retryQuery || lastQuery;
+        if (q) sendQuery(q);
+      };
+
+      group.appendChild(copyBtn);
+      group.appendChild(speakBtn);
+      group.appendChild(retryBtn);
+
+      const wordCount = plainText ? plainText.split(/\s+/).length : 0;
+      const statsSpan = document.createElement('span');
+      statsSpan.className = 'stats-label';
+      statsSpan.innerText = `${wordCount} الفاظ`;
+
+      actionRow.appendChild(group);
+      actionRow.appendChild(statsSpan);
+      el.appendChild(actionRow);
+    }
+
+    function scrollDown() {
+      chatStream.scrollTop = chatStream.scrollHeight;
+    }
+
+    // retryQuery: the user query that produced this bot message (used by 🔄)
+    function pushMsg(role, content, isHtml = false, save = true, retryQuery = '') {
+      const el = document.createElement('div');
+      el.className = `msg ${role}`;
+      el.innerHTML = isHtml ? content : formatMarkdown(content);
+
+      if (role === 'bot') attachActions(el, retryQuery);
+
+      chatStream.appendChild(el);
+      scrollDown();
+
+      if (save) {
+        chatHistory.push({ role, content, isHtml, q: retryQuery });
+        if (chatHistory.length > MAX_HISTORY) chatHistory = chatHistory.slice(-MAX_HISTORY);
+        if (!safeSet('usman_ai_chat_history', chatHistory)) {
+          // Quota exceeded: keep only the most recent messages
+          chatHistory = chatHistory.slice(-20);
+          safeSet('usman_ai_chat_history', chatHistory);
+        }
+      }
+      return el;
+    }
+
+    function showLoader(text) {
+      const el = document.createElement('div');
+      el.className = 'msg bot';
+      el.innerHTML = '<div class="typing-loader"><span></span><span></span><span></span></div> ' + esc(text);
+      chatStream.appendChild(el);
+      scrollDown();
+      return el;
+    }
+
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ur-PK';
+        utter.rate = (currentUser && currentUser.age <= 12) ? 0.85 : 1.0;
+        window.speechSynthesis.speak(utter);
+      } else {
+        alert("اس براؤزر میں آواز کی سہولت موجود نہیں ہے۔");
+      }
+    }
+
+    /* ---------- Network ---------- */
+    async function askModel(val, directive) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), REQUEST_TIMEOUT_MS);
+      try {
+        const res = await fetch(
+          `https://text.pollinations.ai/${encodeURIComponent(val)}?system=${encodeURIComponent(directive)}`,
+          { signal: ctrl.signal }
+        );
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const text = (await res.text()).trim();
+        if (!text) throw new Error('empty');
+        return text;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function setBusy(state) {
+      busy = state;
+      sendBtn.disabled = state;
+    }
+
+    async function sendQuery(override) {
+      if (busy) return;
+
+      const raw = (typeof override === 'string') ? override : chatInput.value;
+      const val = raw.trim().slice(0, MAX_LEN);
+      if (!val) return;
+
+      setBusy(true);
+      try {
+        lastQuery = val;
+        pushMsg('user', val, false, true);
+        chatInput.value = '';
+        trackQuery(val);
+
+        // Visual engine
+        const prefixRe = /^(تصویر:|image:|لوگو:|logo:|بینر:|banner:|تھمب نیل:|thumbnail:)/i;
+        const isVisualQuery = prefixRe.test(val) ||
+          val.includes("تصویر بناؤ") || val.includes("لوگو بناؤ") || val.includes("بینر بناؤ");
+
+        if (isVisualQuery) {
+          const cleanPrompt = val.replace(prefixRe, '').trim() || val;
+          const lowerVal = val.toLowerCase();
+
+          let width = 800, height = 600, styleEngine = "";
+
+          if (cleanPrompt.includes("لوگو") || lowerVal.includes("logo")) {
+            width = 800; height = 800;
+            styleEngine = "vector logo, graphic symbol, minimalist branding, clean lines, golden ratio, flat vector design, iconic, sharp edges, pure solid background, award-winning emblem, no photorealism, vector masterpiece";
+          } else if (cleanPrompt.includes("تھمب نیل") || cleanPrompt.includes("بینر") || lowerVal.includes("thumbnail") || lowerVal.includes("banner")) {
+            width = 1280; height = 720;
+            styleEngine = "16:9 youtube thumbnail composition, bold vibrant contrast, dynamic lighting, dramatic focal point, hyper-engaging visual story, commercial advertising banner layout, crisp 8k sharpness";
+          } else if (cleanPrompt.includes("پرفیوم") || cleanPrompt.includes("گھڑی") || cleanPrompt.includes("پروڈکٹ")) {
+            width = 800; height = 800;
+            styleEngine = "commercial product photography, studio lightbox, soft luxury reflections, elegant marble podium, 85mm macro lens, depth of field, hyper-detailed glass textures, cinematic commercial advertisement";
+          } else {
+            styleEngine = "ultra-photorealistic, 8k resolution, shot on 35mm film lens, natural textures, real life photography, volumetric lighting, raytracing, highly detailed, masterwork, avoid cartoon, avoid 3d render, avoid drawing, avoid distorted anatomy";
+          }
+
+          const masterVisualPrompt = `${cleanPrompt}, ${styleEngine}`;
+          const finalImgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(masterVisualPrompt)}?width=${width}&height=${height}&nologo=true&seed=${Math.floor(Math.random() * 100000)}`;
+
+          const visualCard = `
+            <div class="gen-img-container">
+              <p style="font-weight:600; font-size:13px; margin-bottom:4px;">✨ پروڈکشن گریڈ نتیجہ تیار ہے:</p>
+              <img src="${finalImgUrl}" class="gen-img" alt="USMAN AI Visual Output"
+                   onerror="this.onerror=null;this.alt='⚠️ تصویر لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔'"/>
+              <div style="margin-top:6px;">
+                <a href="${finalImgUrl}" target="_blank" rel="noopener" download="USMAN_AI_Visual.jpg" class="img-download-btn">📥 اصل HD تصویر ڈاؤن لوڈ کریں</a>
+              </div>
+            </div>
+          `;
+          pushMsg('bot', visualCard, true, true, val);
+          return;
+        }
+
+        // Text engine (no personal name or gender is sent in the URL)
+        const masterExpertDirective = `You are USMAN AI, an elite, deeply analytical artificial intelligence created by Usman.
+User profile: Age: ${currentUser.age}, Role: ${currentUser.role}.
+
+CORE OPERATIONAL SPECIALTIES:
+1. GRAPHICS & ART DIRECTION MENTORSHIP: Advise like a Creative Director (colors, lighting, typography).
+2. TOOL & WEBSITE RECOMMENDATIONS: Provide specific, mostly free tools (CapCut, Netlify, GitHub, Pollinations, MDN).
+3. ZERO-TO-HERO PEDAGOGY: Break down complex science/coding step-by-step with analogies.
+4. STRICT USER-DEMANDED FORMATTING: If user asks for summary or key points, give ONLY that format.
+5. RADICAL TRUTHFULNESS: Never flatter blindly. Politely correct misconceptions starting with 'آپ کی یہ بات درست نہیں ہے'.
+6. MULTILINGUAL & POETRY RIGOR: Native fluency in Urdu, Pashto, Punjabi, Sindhi, Balochi, Saraiki, and English. Adhere strictly to authentic meter (بحر) and rhyme (ردیف و قافیہ).`;
+
+        const loader = showLoader('جواب تیار ہو رہا ہے...');
+        try {
+          const text = await askModel(val, masterExpertDirective);
+          loader.remove();
+          pushMsg('bot', text, false, true, val);
+        } catch (err) {
+          loader.remove();
+          const msg = (err && err.name === 'AbortError')
+            ? 'جواب میں بہت دیر ہو گئی۔ برائے مہربانی دوبارہ کوشش کریں۔'
+            : 'معذرت، ریسرچ نیٹ ورک سے رابطہ قائم نہیں ہو سکا۔ برائے مہربانی اپنا انٹرنیٹ کنکشن چیک کریں۔';
+          pushMsg('bot', msg, false, false, val);
+        }
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    function handleEnter(e) {
+      if (e.key === 'Enter' && !e.isComposing) {
+        e.preventDefault();
+        sendQuery();
+      }
+    }
+
+    function startVoice() {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        alert("مائیکروفون اس براؤزر میں سپورٹڈ نہیں ہے۔");
+        return;
+      }
+      if (recognizing) return;
+      const rec = new SR();
+      rec.lang = 'ur-PK';
+      rec.interimResults = false;
+      rec.onresult = (e) => {
+        chatInput.value = e.results[0][0].transcript;
+      };
+      rec.onerror = (e) => {
+        alert(e.error === 'not-allowed' || e.error === 'service-not-allowed'
+          ? "مائیکروفون کی اجازت نہیں دی گئی۔ براہ کرم سیٹنگز میں اجازت دیں۔"
+          : "آواز پہچاننے میں مسئلہ آیا۔ دوبارہ کوشش کریں۔");
+      };
+      rec.onend = () => { recognizing = false; };
+      try {
+        recognizing = true;
+        rec.start();
+      } catch (e) {
+        recognizing = false;
+      }
+    }
+
+    function askImage() {
+      const p = prompt("کس چیز کی تصویر، لوگو یا بینر بنوانا چاہتے ہیں؟ تفصیل لکھیں:");
+      if (p && p.trim()) {
+        sendQuery(`تصویر: ${p.trim()}`);
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>
